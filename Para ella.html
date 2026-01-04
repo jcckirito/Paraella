@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Para Treyci ✨</title>
+  <style>
+    :root{
+      --bg1:#0b1020; --bg2:#140a24; --card:#ffffff10; --line:#ffffff22;
+      --text:#f7f7fb; --muted:#cfd3ffcc; --accent:#ff4fd8; --accent2:#7c5cff; --ok:#2ee59d;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% 10%, #ff4fd820, transparent 60%),
+        radial-gradient(900px 500px at 80% 70%, #7c5cff22, transparent 60%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      display:flex; align-items:center; justify-content:center;
+      padding:24px; overflow:hidden;
+    }
+    .stars{position:absolute; inset:0; pointer-events:none; opacity:.35;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, #fff, transparent 60%),
+        radial-gradient(2px 2px at 140px 120px, #fff, transparent 60%),
+        radial-gradient(1px 1px at 260px 80px, #fff, transparent 60%),
+        radial-gradient(2px 2px at 420px 200px, #fff, transparent 60%),
+        radial-gradient(1px 1px at 560px 40px, #fff, transparent 60%),
+        radial-gradient(2px 2px at 700px 140px, #fff, transparent 60%),
+        radial-gradient(1px 1px at 840px 90px, #fff, transparent 60%),
+        radial-gradient(2px 2px at 980px 260px, #fff, transparent 60%);
+      background-size: 1000px 320px;
+      animation: drift 14s linear infinite;
+    }
+    @keyframes drift{from{transform:translateX(0)}to{transform:translateX(-200px)}}
+    .wrap{width:min(860px, 100%); position:relative;}
+    .card{
+      background: linear-gradient(180deg, #ffffff10, #ffffff06);
+      border:1px solid var(--line); border-radius:24px; padding:22px;
+      box-shadow: 0 18px 60px #00000055; backdrop-filter: blur(10px);
+    }
+    .top{display:flex; gap:14px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:14px;}
+    .badge{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 12px; border-radius:999px;
+      border:1px solid var(--line); background:#0000002a;
+      font-size:14px; color:var(--muted);
+    }
+    .dot{width:10px;height:10px;border-radius:50%;
+      background: linear-gradient(90deg,var(--accent),var(--accent2));
+      box-shadow:0 0 16px #ff4fd888;
+    }
+    h1{font-size: clamp(26px, 4vw, 42px); margin: 10px 0 6px; line-height:1.1;}
+    .sub{color:var(--muted); margin: 0 0 16px; font-size: 15px;}
+    .divider{height:1px;background: linear-gradient(90deg, transparent, #ffffff2e, transparent); margin: 16px 0;}
+    .msg{display:grid; gap:12px; font-size:16px; line-height:1.6;}
+    .bubble{background: #0000002b; border:1px solid var(--line); border-radius:18px; padding:14px;}
+    .row{display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-top:14px;}
+    .btns{display:flex; gap:10px; flex-wrap:wrap;}
+    button{
+      border:0; cursor:pointer; font-weight:800;
+      padding:12px 14px; border-radius:14px; color:#0b1020;
+      background: linear-gradient(90deg, var(--accent), #ff8ae8);
+      box-shadow: 0 10px 26px #ff4fd833;
+      transition: transform .08s ease, filter .2s ease;
+    }
+    button:hover{filter:brightness(1.05)}
+    button:active{transform:scale(.98)}
+    .ghost{background:transparent; color:var(--text); border:1px solid var(--line); box-shadow:none;}
+    .ok{background: linear-gradient(90deg, var(--ok), #8dffc8); box-shadow: 0 10px 26px #2ee59d33;}
+    .mini{font-size:13px; color:var(--muted);}
+    .modal{
+      position:fixed; inset:0; display:none; align-items:center; justify-content:center;
+      padding:18px; background:#0000007a; backdrop-filter: blur(6px);
+    }
+    .modal.open{display:flex}
+    .box{
+      width:min(560px, 100%);
+      background: linear-gradient(180deg, #0f1630, #0b1020);
+      border:1px solid var(--line); border-radius:22px; padding:18px;
+      box-shadow: 0 18px 70px #0000007a;
+    }
+    .box h2{margin:6px 0 6px}
+    .box p{margin:0 0 12px; color:var(--muted); line-height:1.5}
+    .chips{display:flex; gap:8px; flex-wrap:wrap; margin: 10px 0 14px}
+    .chip{padding:9px 10px; border-radius:999px; border:1px solid var(--line); background:#ffffff08; font-size:13px;}
+    .footer{display:flex; justify-content:space-between; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px;}
+    .links{display:flex; gap:10px; flex-wrap:wrap}
+    a{color:#ffd3ff; text-decoration:none; border-bottom:1px dashed #ffd3ff66;}
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <div class="badge"><span class="dot"></span> Mensajito para ti</div>
+        <div class="badge">Desde San Ramón 🌿</div>
+      </div>
+
+      <h1>Hola, <span id="name">Treyci</span> 💖</h1>
+      <p class="sub">Te hice este detalle para sacarte una sonrisa (aunque sea chiquita) ✨</p>
+
+      <div class="divider"></div>
+
+      <div class="msg" id="messages"></div>
+
+      <div class="row">
+        <div class="btns">
+          <button id="btnNext">Siguiente ✨</button>
+          <button class="ghost" id="btnSurprise">Plan bonito 🌿</button>
+        </div>
+        <div class="mini" id="hint">Si llegas a sonreír… yo ya gané 😄</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="box">
+      <h2>¿Un paseo a Tarma? 🌿</h2>
+      <p>
+        Mira mi propuesta (cero presión): salimos desde <strong>San Ramón</strong>,
+        vamos a <strong>Tarma</strong> a comer algo rico, caminamos tranqui,
+        hacemos fotitos y regresamos temprano.
+      </p>
+
+      <div class="chips">
+        <span class="chip">Café / postre</span>
+        <span class="chip">Caminata tranqui</span>
+        <span class="chip">Fotos lindas</span>
+        <span class="chip">Risas</span>
+      </div>
+
+      <p class="mini">Si Tarma no te provoca, tú eliges el plan y yo me adapto 😌</p>
+
+      <div class="footer">
+        <button class="ok" id="btnYes">Sí, me gustaría 😊</button>
+        <button class="ghost" id="btnClose">Cerrar</button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="links mini">
+        <span>Tip: al darle “Sí”, se copia un mensaje listo para WhatsApp 😉</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const girlName = "Treyci";
+
+    const steps = [
+      { text: `Treyci… <strong>hola</strong> 💖 Solo paso a dejarte un saludo bonito: que tu día se ponga más suave y más lindo ✨` },
+      { text: `¿Cómo estás? (de verdad) 😌 Si hoy ha sido pesado, te mando paz. Si ha sido bonito, te mando más bonito.` },
+      { text: `Te confieso algo simple: a veces uno anda en lo suyo… y de pronto se acuerda de alguien y <strong>se le alegra el ánimo</strong>. Eso me pasó contigo.` },
+      { text: `Me gusta tu vibra. No es floro raro 😅 es que conversar contigo se siente fácil, y eso vale un montón.` },
+      { text: `Y ya que estamos cerquita… te hago una pregunta con cariño: <strong>¿te gustaría que salgamos un día?</strong> Sin presión, solo un plan bonito.` },
+      { text: `<strong>Plan:</strong> San Ramón → Tarma 🌿  
+              Un café/postre, caminamos tranqui, fotitos y regresamos temprano.  
+              <strong>¿Te animas?</strong>` }
+    ];
+
+    const messagesEl = document.getElementById("messages");
+    const btnNext = document.getElementById("btnNext");
+    const btnSurprise = document.getElementById("btnSurprise");
+    const modal = document.getElementById("modal");
+    const btnClose = document.getElementById("btnClose");
+    const btnYes = document.getElementById("btnYes");
+
+    let i = 0;
+
+    function renderStep(index){
+      messagesEl.innerHTML = "";
+      const b = document.createElement("div");
+      b.className = "bubble";
+      b.innerHTML = steps[index].text;
+      messagesEl.appendChild(b);
+
+      btnNext.textContent = (index === steps.length - 1) ? "Abrir invitación 🌿" : "Siguiente ✨";
+    }
+
+    btnNext.addEventListener("click", () => {
+      if(i < steps.length - 1){
+        i++;
+        renderStep(i);
+      } else {
+        modal.classList.add("open");
+      }
+    });
+
+    btnSurprise.addEventListener("click", () => modal.classList.add("open"));
+    btnClose.addEventListener("click", () => modal.classList.remove("open"));
+
+    btnYes.addEventListener("click", async () => {
+      const textToCopy =
+`Hola Treyci 😊
+¿Te animas a un paseo a Tarma este finde o la próxima semana?
+Salimos desde San Ramón, vamos por un café/postre, caminamos tranqui y regresamos temprano.
+Si prefieres otro plan, tú dime y yo me adapto 🙌`;
+
+      try { await navigator.clipboard.writeText(textToCopy); } catch(e) {}
+
+      alert("Listo 😊 Se copió un mensaje para WhatsApp (si no se copió, igual lo verás aquí).\\n\\n" + textToCopy);
+      modal.classList.remove("open");
+    });
+
+    renderStep(i);
+  </script>
+</body>
+</html>
