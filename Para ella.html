@@ -35,13 +35,15 @@
       animation: drift 14s linear infinite;
     }
     @keyframes drift{from{transform:translateX(0)}to{transform:translateX(-200px)}}
-    .wrap{width:min(860px, 100%); position:relative;}
+
+    .wrap{width:min(920px, 100%); position:relative;}
     .card{
+      position:relative;
       background: linear-gradient(180deg, #ffffff10, #ffffff06);
       border:1px solid var(--line); border-radius:24px; padding:22px;
       box-shadow: 0 18px 60px #00000055; backdrop-filter: blur(10px);
     }
-    .top{display:flex; gap:14px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:14px;}
+    .top{display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:14px;}
     .badge{
       display:inline-flex; align-items:center; gap:10px;
       padding:10px 12px; border-radius:999px;
@@ -71,37 +73,116 @@
     .ghost{background:transparent; color:var(--text); border:1px solid var(--line); box-shadow:none;}
     .ok{background: linear-gradient(90deg, var(--ok), #8dffc8); box-shadow: 0 10px 26px #2ee59d33;}
     .mini{font-size:13px; color:var(--muted);}
+
+    /* Modal */
     .modal{
       position:fixed; inset:0; display:none; align-items:center; justify-content:center;
       padding:18px; background:#0000007a; backdrop-filter: blur(6px);
+      z-index:50;
     }
     .modal.open{display:flex}
     .box{
-      width:min(560px, 100%);
+      position:relative;
+      width:min(620px, 100%);
       background: linear-gradient(180deg, #0f1630, #0b1020);
       border:1px solid var(--line); border-radius:22px; padding:18px;
       box-shadow: 0 18px 70px #0000007a;
+      overflow:hidden;
     }
     .box h2{margin:6px 0 6px}
     .box p{margin:0 0 12px; color:var(--muted); line-height:1.5}
     .chips{display:flex; gap:8px; flex-wrap:wrap; margin: 10px 0 14px}
     .chip{padding:9px 10px; border-radius:999px; border:1px solid var(--line); background:#ffffff08; font-size:13px;}
     .footer{display:flex; justify-content:space-between; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px;}
-    .links{display:flex; gap:10px; flex-wrap:wrap}
-    a{color:#ffd3ff; text-decoration:none; border-bottom:1px dashed #ffd3ff66;}
+
+    /* Celebración */
+    .shake { animation: shake .45s ease-in-out 1; }
+    @keyframes shake {
+      0%{transform:translate(0,0) rotate(0)}
+      20%{transform:translate(-2px,1px) rotate(-.6deg)}
+      40%{transform:translate(2px,-1px) rotate(.6deg)}
+      60%{transform:translate(-2px,-1px) rotate(-.6deg)}
+      80%{transform:translate(2px,1px) rotate(.6deg)}
+      100%{transform:translate(0,0) rotate(0)}
+    }
+
+    .confetti-layer{
+      pointer-events:none;
+      position:absolute;
+      inset:0;
+      z-index:60;
+      overflow:hidden;
+    }
+    .confetti{
+      position:absolute;
+      width:10px; height:14px;
+      border-radius:3px;
+      opacity:0;
+      transform: translateY(0) rotate(0deg);
+      animation: pop 1.2s ease-out forwards;
+    }
+    @keyframes pop{
+      0%{opacity:0; transform:translate(var(--x0), var(--y0)) rotate(0deg) scale(.8)}
+      10%{opacity:1}
+      100%{opacity:0; transform:translate(var(--x1), var(--y1)) rotate(720deg) scale(1)}
+    }
+
+    .float-emoji{
+      position:absolute;
+      font-size:22px;
+      opacity:0;
+      animation: floatUp 1.6s ease-out forwards;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
+    }
+    @keyframes floatUp{
+      0%{opacity:0; transform:translate(var(--sx), var(--sy)) scale(.8)}
+      12%{opacity:1}
+      100%{opacity:0; transform:translate(var(--ex), var(--ey)) scale(1.25)}
+    }
+
+    /* Final CTA */
+    .final{
+      display:none;
+      margin-top:12px;
+      padding:14px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:#0000002b;
+    }
+    .final.open{display:block}
+    .cta-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
+    .wa{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:12px 14px; border-radius:14px;
+      border:1px solid #2ee59d55;
+      background: linear-gradient(90deg, #2ee59d, #8dffc8);
+      color:#0b1020; font-weight:900;
+      text-decoration:none;
+      box-shadow: 0 10px 26px #2ee59d33;
+    }
   </style>
 </head>
 <body>
   <div class="stars"></div>
 
+  <!-- Música YouTube oculta (se reproduce con botón) -->
+  <iframe
+    id="ytPlayer"
+    width="0"
+    height="0"
+    src="https://www.youtube.com/embed/rB4RZ5TSvak?enablejsapi=1"
+    frameborder="0"
+    allow="autoplay"
+  ></iframe>
+
   <div class="wrap">
     <div class="card">
       <div class="top">
         <div class="badge"><span class="dot"></span> Mensajito para ti</div>
-        <div class="badge">Desde San Ramón 🌿</div>
+        <div class="badge">San Ramón 🌿 → Tarma ✨</div>
       </div>
 
-      <h1>Hola, <span id="name">Treyci</span> 💖</h1>
+      <h1>Hola, Treyci 💖</h1>
       <p class="sub">Te hice este detalle para sacarte una sonrisa (aunque sea chiquita) ✨</p>
 
       <div class="divider"></div>
@@ -112,18 +193,21 @@
         <div class="btns">
           <button id="btnNext">Siguiente ✨</button>
           <button class="ghost" id="btnSurprise">Plan bonito 🌿</button>
+          <button class="ghost" id="btnMusic">Reproducir música 🎵</button>
         </div>
-        <div class="mini" id="hint">Si llegas a sonreír… yo ya gané 😄</div>
+        <div class="mini">Tip: la música se activa solo cuando tú tocas el botón 🎶</div>
       </div>
     </div>
   </div>
 
   <div class="modal" id="modal">
-    <div class="box">
+    <div class="box" id="modalBox">
+      <div class="confetti-layer" id="confettiLayer"></div>
+
       <h2>¿Un paseo a Tarma? 🌿</h2>
       <p>
-        Mira mi propuesta (cero presión): salimos desde <strong>San Ramón</strong>,
-        vamos a <strong>Tarma</strong> a comer algo rico, caminamos tranqui,
+        Propuesta simple (cero presión): salimos desde <strong>San Ramón</strong>,
+        vamos a <strong>Tarma</strong> por un café/postre, caminamos tranqui,
         hacemos fotitos y regresamos temprano.
       </p>
 
@@ -141,25 +225,39 @@
         <button class="ghost" id="btnClose">Cerrar</button>
       </div>
 
-      <div class="divider"></div>
-
-      <div class="links mini">
-        <span>Tip: al darle “Sí”, se copia un mensaje listo para WhatsApp 😉</span>
+      <div class="final" id="finalBox">
+        <div><strong>¡Yaa! 😄</strong> Entonces…</div>
+        <div style="margin-top:6px">
+          <strong>Escríbeme “SÍ” a mi WhatsApp</strong> para coordinar día y hora 💬
+        </div>
+        <div class="cta-row">
+          <a class="wa" id="waLink" href="#" target="_blank" rel="noopener">Abrir WhatsApp ✅</a>
+          <button class="ghost" id="btnCopy">Copiar mensaje 📋</button>
+        </div>
+        <div class="mini" style="margin-top:10px">Si prefieres otro plan, tú eliges y yo me adapto 😌</div>
       </div>
     </div>
   </div>
 
   <script>
+    // ================== CONFIG ==================
+    const WHATSAPP_NUMBER = "51936652947"; // Perú + tu número
     const girlName = "Treyci";
 
+    const WA_MESSAGE =
+`Hola ${girlName} 😊
+Me dijiste que sí… entonces queda nuestro paseo a Tarma 🌿✨
+¿Te parece este finde o la próxima semana?`;
+
+    // ================== STORY ==================
     const steps = [
-      { text: `Treyci… <strong>hola</strong> 💖 Solo paso a dejarte un saludo bonito: que tu día se ponga más suave y más lindo ✨` },
+      { text: `${girlName}… <strong>hola</strong> 💖 Solo paso a dejarte un saludo bonito: que tu día se ponga más suave y más lindo ✨` },
       { text: `¿Cómo estás? (de verdad) 😌 Si hoy ha sido pesado, te mando paz. Si ha sido bonito, te mando más bonito.` },
       { text: `Te confieso algo simple: a veces uno anda en lo suyo… y de pronto se acuerda de alguien y <strong>se le alegra el ánimo</strong>. Eso me pasó contigo.` },
       { text: `Me gusta tu vibra. No es floro raro 😅 es que conversar contigo se siente fácil, y eso vale un montón.` },
       { text: `Y ya que estamos cerquita… te hago una pregunta con cariño: <strong>¿te gustaría que salgamos un día?</strong> Sin presión, solo un plan bonito.` },
-      { text: `<strong>Plan:</strong> San Ramón → Tarma 🌿  
-              Un café/postre, caminamos tranqui, fotitos y regresamos temprano.  
+      { text: `<strong>Plan:</strong> San Ramón → Tarma 🌿<br>
+              Un café/postre, caminamos tranqui, fotitos y regresamos temprano.<br>
               <strong>¿Te animas?</strong>` }
     ];
 
@@ -169,16 +267,26 @@
     const modal = document.getElementById("modal");
     const btnClose = document.getElementById("btnClose");
     const btnYes = document.getElementById("btnYes");
+    const modalBox = document.getElementById("modalBox");
+    const confettiLayer = document.getElementById("confettiLayer");
+    const finalBox = document.getElementById("finalBox");
+    const waLink = document.getElementById("waLink");
+    const btnCopy = document.getElementById("btnCopy");
+
+    // WhatsApp link
+    function updateWaLink(){
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WA_MESSAGE)}`;
+      waLink.href = url;
+    }
+    updateWaLink();
 
     let i = 0;
-
     function renderStep(index){
       messagesEl.innerHTML = "";
       const b = document.createElement("div");
       b.className = "bubble";
       b.innerHTML = steps[index].text;
       messagesEl.appendChild(b);
-
       btnNext.textContent = (index === steps.length - 1) ? "Abrir invitación 🌿" : "Siguiente ✨";
     }
 
@@ -194,20 +302,108 @@
     btnSurprise.addEventListener("click", () => modal.classList.add("open"));
     btnClose.addEventListener("click", () => modal.classList.remove("open"));
 
+    // ================== CELEBRATION ==================
+    const confettiColors = ["#ff4fd8","#7c5cff","#2ee59d","#ffd166","#ffffff","#4dd7ff"];
+    const emojis = ["💖","✨","😍","🥳","🌸","💐","💘","😄"];
+
+    function rand(min,max){ return Math.random()*(max-min)+min; }
+
+    function burstConfetti(){
+      // confetti
+      for(let k=0; k<42; k++){
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.style.background = confettiColors[Math.floor(Math.random()*confettiColors.length)];
+
+        c.style.setProperty("--x0", rand(220, 340) + "px");
+        c.style.setProperty("--y0", rand(160, 240) + "px");
+        c.style.setProperty("--x1", rand(-260, 260) + "px");
+        c.style.setProperty("--y1", rand(-420, -240) + "px");
+
+        c.style.left = rand(40, 560) + "px";
+        c.style.top  = rand(120, 360) + "px";
+
+        c.style.animationDuration = rand(0.9, 1.5) + "s";
+        confettiLayer.appendChild(c);
+        setTimeout(()=> c.remove(), 1600);
+      }
+
+      // emojis flotando
+      for(let k=0; k<18; k++){
+        const e = document.createElement("div");
+        e.className = "float-emoji";
+        e.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+
+        e.style.setProperty("--sx", rand(-80, 80) + "px");
+        e.style.setProperty("--sy", rand(40, 120) + "px");
+        e.style.setProperty("--ex", rand(-180, 180) + "px");
+        e.style.setProperty("--ey", rand(-420, -260) + "px");
+
+        e.style.left = rand(80, 520) + "px";
+        e.style.top  = rand(220, 420) + "px";
+        e.style.animationDuration = rand(1.1, 1.9) + "s";
+
+        confettiLayer.appendChild(e);
+        setTimeout(()=> e.remove(), 2000);
+      }
+
+      modalBox.classList.remove("shake");
+      void modalBox.offsetWidth;
+      modalBox.classList.add("shake");
+    }
+
     btnYes.addEventListener("click", async () => {
-      const textToCopy =
-`Hola Treyci 😊
-¿Te animas a un paseo a Tarma este finde o la próxima semana?
-Salimos desde San Ramón, vamos por un café/postre, caminamos tranqui y regresamos temprano.
-Si prefieres otro plan, tú dime y yo me adapto 🙌`;
+      burstConfetti();
+      finalBox.classList.add("open");
 
-      try { await navigator.clipboard.writeText(textToCopy); } catch(e) {}
+      // Copiar mensaje
+      try { await navigator.clipboard.writeText(WA_MESSAGE); } catch(e) {}
 
-      alert("Listo 😊 Se copió un mensaje para WhatsApp (si no se copió, igual lo verás aquí).\\n\\n" + textToCopy);
-      modal.classList.remove("open");
+      // vibración si es móvil
+      if (navigator.vibrate) navigator.vibrate([30, 40, 30]);
+
+      setTimeout(() => finalBox.scrollIntoView({ behavior: "smooth", block: "end" }), 250);
     });
 
+    btnCopy.addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(WA_MESSAGE);
+        alert("Mensaje copiado ✅");
+      } catch(e){
+        alert("No se pudo copiar 😅");
+      }
+    });
+
+    // ================== YOUTUBE MUSIC ==================
+    // (No autoplay: se activa con el botón)
+    let player;
+    let musicOn = false;
+    const btnMusic = document.getElementById("btnMusic");
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player("ytPlayer", {
+        events: { onReady: () => {} }
+      });
+    }
+
+    btnMusic.addEventListener("click", () => {
+      if (!player) return;
+
+      if (!musicOn) {
+        player.playVideo();
+        musicOn = true;
+        btnMusic.textContent = "Pausar música 🔇";
+      } else {
+        player.pauseVideo();
+        musicOn = false;
+        btnMusic.textContent = "Reproducir música 🎵";
+      }
+    });
+
+    // init
     renderStep(i);
   </script>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
